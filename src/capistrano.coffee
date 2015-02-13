@@ -17,7 +17,7 @@ module.exports = (robot) ->
   robot.hear /(cap|capistrano) ([a-z0-9]+) (.*)/i, (msg) ->
     project  = msg.match[2]
     command  = msg.match[3]
-    username = msg.message.user.room.split('@')[0]
+    username = msg.message.user.name
 
     if (!folder.projectExists project)
       return msg.send "This project doesn't exists."
