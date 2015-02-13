@@ -9,11 +9,19 @@ class Capistrano
   streamResult: (cap, msg) ->
     capOut = carrier.carry cap.stdout
     capErr = carrier.carry cap.stderr
+    output = ""
 
     capOut.on 'line', (line) ->
-      msg.send line
+      output += line + "\n"
 
     capErr.on 'line', (line) ->
-      msg.send line
+      output += "*" + line + "*\n"
+
+    # Send message out in a bulk
+    setInterval ->
+      if output != ""
+        msg.send output.trim()
+        output = ""
+    , 500
 
 module.exports = Capistrano
